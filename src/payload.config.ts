@@ -12,6 +12,7 @@ import { Services } from './collections/Services'
 import { ContactSubmissions } from './collections/ContactSubmissions'
 import { SiteSettings } from './globals/SiteSettings'
 import { HomepageContent } from './globals/HomepageContent'
+import { OverOnsContent } from './globals/OverOnsContent'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,9 +23,19 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    theme: 'light',
+    meta: {
+      titleSuffix: '— SK Accounting',
+    },
+    components: {
+      graphics: {
+        Logo: '/components/admin/Logo',
+        Icon: '/components/admin/Icon',
+      },
+    },
   },
   collections: [Users, Media, TeamMembers, Services, ContactSubmissions],
-  globals: [SiteSettings, HomepageContent],
+  globals: [SiteSettings, HomepageContent, OverOnsContent],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

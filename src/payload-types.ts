@@ -96,10 +96,12 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     'homepage-content': HomepageContent;
+    'over-ons-content': OverOnsContent;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'homepage-content': HomepageContentSelect<false> | HomepageContentSelect<true>;
+    'over-ons-content': OverOnsContentSelect<false> | OverOnsContentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -455,6 +457,31 @@ export interface HomepageContent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "over-ons-content".
+ */
+export interface OverOnsContent {
+  id: number;
+  onsVerhaalTitle?: string | null;
+  onsVerhaalDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -476,6 +503,17 @@ export interface HomepageContentSelect<T extends boolean = true> {
   heroCtaLabel?: T;
   statYears?: T;
   statClients?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "over-ons-content_select".
+ */
+export interface OverOnsContentSelect<T extends boolean = true> {
+  onsVerhaalTitle?: T;
+  onsVerhaalDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
