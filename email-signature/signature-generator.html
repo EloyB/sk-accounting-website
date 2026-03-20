@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SK Accounting — Handtekening Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      background: #f4f6f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #034c22;
+      color: #fff;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    header h1 {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    header span {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* ── Left panel ── */
+    .panel-form {
+      background: #fff;
+      border-right: 1px solid #dde8e2;
+      padding: 28px 28px 40px;
+      overflow-y: auto;
+    }
+
+    .instructions {
+      background: #edf5f0;
+      border-left: 3px solid #034c22;
+      border-radius: 0 6px 6px 0;
+      padding: 12px 14px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #2a4a35;
+    }
+    .instructions ol {
+      padding-left: 16px;
+      margin-top: 6px;
+    }
+    .instructions li { margin-bottom: 3px; }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #034c22;
+      margin-bottom: 14px;
+    }
+
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 5px;
+    }
+    .field input[type="text"],
+    .field input[type="tel"],
+    .field input[type="email"],
+    .field input[type="url"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #cdd9d4;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1a1a1a;
+      background: #fafcfb;
+      transition: border-color 0.15s;
+      outline: none;
+    }
+    .field input:focus {
+      border-color: #034c22;
+      background: #fff;
+    }
+    .field .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 3px;
+    }
+
+    /* Photo upload */
+    .photo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .upload-btn {
+      display: inline-block;
+      padding: 8px 14px;
+      background: #034c22;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .upload-btn:hover { background: #025a29; }
+    #f-foto { display: none; }
+    #thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: 6px;
+      border: 2px solid #d2e7db;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* ── Right panel ── */
+    .panel-preview {
+      padding: 28px 32px 40px;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .copy-btn {
+      padding: 9px 20px;
+      background: #034c22;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: #025a29; }
+    .copy-btn.copied { background: #1a7a45; }
+
+    .preview-box {
+      background: #fff;
+      border: 1px solid #dde8e2;
+      border-radius: 8px;
+      padding: 24px;
+      display: inline-block;
+      min-width: 540px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .panel-preview { padding: 24px 16px; }
+      .preview-box { min-width: unset; width: 100%; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>SK Accounting — Handtekening Generator</h1>
+  <span>Vul het formulier in en kopieer de handtekening</span>
+</header>
+
+<div class="layout">
+
+  <!-- ── FORM PANEL ── -->
+  <div class="panel-form">
+    <div class="instructions">
+      <strong>Hoe gebruik je dit?</strong>
+      <ol>
+        <li>Vul je gegevens in het formulier in.</li>
+        <li>Upload je profielfoto (vierkant, 200×200 px).</li>
+        <li>Bekijk de live preview rechts.</li>
+        <li>Klik op <strong>Kopieer handtekening</strong>.</li>
+        <li>Plak in Gmail: <em>Instellingen → Handtekeningen → Nieuw</em>.</li>
+        <li>Plak in Outlook: <em>Bestand → Opties → E-mail → Handtekeningen</em>.</li>
+      </ol>
+    </div>
+
+    <h2>Jouw gegevens</h2>
+
+    <div class="field">
+      <label for="f-naam">Volledige naam</label>
+      <input type="text" id="f-naam" placeholder="bijv. Jan Janssen" autocomplete="name" />
+    </div>
+
+    <div class="field">
+      <label for="f-titel">Functietitel</label>
+      <input type="text" id="f-titel" placeholder="bijv. Zaakvoerder" />
+    </div>
+
+    <div class="field">
+      <label for="f-telefoon">Telefoonnummer</label>
+      <input type="tel" id="f-telefoon" placeholder="bijv. +32 14 00 00 00" autocomplete="tel" />
+    </div>
+
+    <div class="field">
+      <label for="f-email">E-mailadres</label>
+      <input type="email" id="f-email" placeholder="bijv. jan@sk-accounting.be" autocomplete="email" />
+    </div>
+
+    <div class="field">
+      <label for="f-linkedin">LinkedIn-URL <span style="font-weight:400;color:#aaa;">(optioneel)</span></label>
+      <input type="url" id="f-linkedin" placeholder="https://linkedin.com/in/jouw-naam" />
+    </div>
+
+    <div class="field">
+      <label for="f-instagram">Instagram-URL <span style="font-weight:400;color:#aaa;">(optioneel)</span></label>
+      <input type="url" id="f-instagram" placeholder="https://instagram.com/sk_accounting" />
+    </div>
+
+    <div class="field">
+      <label>Profielfoto</label>
+      <div class="photo-row">
+        <label class="upload-btn" for="f-foto">Kies foto&hellip;</label>
+        <input type="file" id="f-foto" accept="image/*" />
+        <img id="thumb" alt="Voorbeeld foto" />
+        <span id="no-photo-hint" style="font-size:12px;color:#888;">Nog geen foto gekozen</span>
+      </div>
+      <p class="hint">Aanbevolen: vierkant, 200×200 px, JPG of PNG.</p>
+    </div>
+  </div>
+
+  <!-- ── PREVIEW PANEL ── -->
+  <div class="panel-preview">
+    <div class="preview-header">
+      <h2 style="margin-bottom:0;">Live preview</h2>
+      <button class="copy-btn" id="copy-btn">Kopieer handtekening</button>
+    </div>
+    <p class="preview-label">Zo ziet je handtekening eruit in een e-mailclient:</p>
+    <div class="preview-box">
+      <div id="sig-wrapper"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── Base64 assets (extracted from signature-with-photo.html) ──────────────
+  const LOGO_B64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDU3IiBoZWlnaHQ9IjI3MCIgdmlld0JveD0iMCAwIDQ1NyAyNzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8xNDAyXzEzKSI+CjxwYXRoIGQ9Ik00NS4wMDU4IDEwOS4xNDZIMTI2LjAwNkM4My4yMDU4IDg2LjM0NjEgNTguNTA1OCA2MS42NDYxIDUxLjUwNTkgNTIuMTQ2MUM0NS4zMzkyIDM5LjMxMjggNDMuNzA1OSAxMi4yNDYyIDg2LjUwNTkgNi42NDYxNEMxMjkuMzA2IDEuMDQ2MTQgMTUxLjMzOSA1MS4zMTI4IDE1Ny4wMDYgNzcuMTQ2MUwxOTMuMDA2IDYxLjE0NjFDMTg4LjUwNiA1My42NDYxIDE4Mi44MDYgMzQuNDQ2MiAxNDYuMDA2IDEzLjY0NjJDMTA5LjIwNiAtNy4xNTM4NiA2Ni4wMDU5IDIuMzEyODEgNDkuMDA1OCA5LjY0NjE0QzM4LjgzOTIgMTMuODEyOCAxOC42MDU4IDI5LjA0NjIgMTkuMDA1OCA1Ni42NDYyQzE5LjQwNTggODQuMjQ2MiAzNi41MDU4IDEwMy4xNDYgNDUuMDA1OCAxMDkuMTQ2WiIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMTc4LjUgMTU0SDEwNEMxMTguNCAxNTcuMiAxNDIuNjY3IDE4MC42NjcgMTUzIDE5MkMxODcuNCAyNDYgMTQ2LjY2NyAyNjAuODMzIDEyMiAyNjEuNUM2Ni44IDI1OS45IDQyLjY2NjcgMTk4LjE2NyAzNy41IDE2Ny41TDAgMTg4QzE0IDIxNS4yIDMzIDIzNSA0MiAyNDIuNUM1NCAyNTIuNSAxMzkgMjk2LjUgMTc4LjUgMjQ2LjVDMjEwLjEgMjA2LjUgMTkxLjY2NyAxNjguMTY3IDE3OC41IDE1NFoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIxNiA3QzIxOC44IDkuOCAyMTkuODMzIDc2LjUgMjIwIDEwOS41SDI3My41QzI3MS4xIDcxLjkgMjc0LjUgMjUuNSAyNzYuNSA3SDIxNloiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTQwNC41IDdDNDAzLjcgMTQuMiAzNDAuODMzIDc4LjMzMzMgMzA5LjUgMTA5LjVIMzMyLjVMMzI2IDEwMC41QzMyNy4yIDEwMC4xIDM5NC41IDI2LjUgNDIwLjUgN0g0MDQuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTI3My41IDE1NUgyMjBDMjIxLjYgMTg4LjIgMjE4IDI0MC4xNjcgMjE2IDI2MkgyNzYuNUMyNzIuNSAyNTYuOCAyNzIuODMzIDE4OC41IDI3My41IDE1NVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTM2NyAxNTVIMjk5QzI5OSAxNTUgMzc2LjUgMjUwLjUgMzc4LjUgMjYySDQ1N0M0MzcgMjUwLjggMzg4LjY2NyAxODYgMzY3IDE1NVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTg4Ljg4MDIgMTM2LjE2SDgzLjA2MDJMODIuMDYwMiAxMzlINzkuNjgwMkw4NC42NjAyIDEyNS4wOEg4Ny4zMDAyTDkyLjI4MDIgMTM5SDg5Ljg4MDJMODguODgwMiAxMzYuMTZaTTg4LjI0MDIgMTM0LjNMODUuOTgwMiAxMjcuODRMODMuNzAwMiAxMzQuM0g4OC4yNDAyWk0xMDkuMDg1IDEzMi4wMkMxMDkuMDg1IDEzMC42NiAxMDkuMzk5IDEyOS40NCAxMTAuMDI1IDEyOC4zNkMxMTAuNjY1IDEyNy4yOCAxMTEuNTI1IDEyNi40NCAxMTIuNjA1IDEyNS44NEMxMTMuNjk5IDEyNS4yMjcgMTE0Ljg5MiAxMjQuOTIgMTE2LjE4NSAxMjQuOTJDMTE3LjY2NSAxMjQuOTIgMTE4Ljk3OSAxMjUuMjg3IDEyMC4xMjUgMTI2LjAyQzEyMS4yODUgMTI2Ljc0IDEyMi4xMjUgMTI3Ljc2NyAxMjIuNjQ1IDEyOS4xSDExOS45MDVDMTE5LjU0NSAxMjguMzY3IDExOS4wNDUgMTI3LjgyIDExOC40MDUgMTI3LjQ2QzExNy43NjUgMTI3LjEgMTE3LjAyNSAxMjYuOTIgMTE2LjE4NSAxMjYuOTJDMTE1LjI2NSAxMjYuOTIgMTE0LjQ0NSAxMjcuMTI3IDExMy43MjUgMTI3LjU0QzExMy4wMDUgMTI3Ljk1MyAxMTIuNDM5IDEyOC41NDcgMTEyLjAyNSAxMjkuMzJDMTExLjYyNSAxMzAuMDkzIDExMS40MjUgMTMwLjk5MyAxMTEuNDI1IDEzMi4wMkMxMTEuNDI1IDEzMy4wNDcgMTExLjYyNSAxMzMuOTQ3IDExMi4wMjUgMTM0LjcyQzExMi40MzkgMTM1LjQ5MyAxMTMuMDA1IDEzNi4wOTMgMTEzLjcyNSAxMzYuNTJDMTE0LjQ0NSAxMzYuOTMzIDExNS4yNjUgMTM3LjE0IDExNi4xODUgMTM3LjE0QzExNy4wMjUgMTM3LjE0IDExNy43NjUgMTM2Ljk2IDExOC40MDUgMTM2LjZDMTE5LjA0NSAxMzYuMjQgMTE5LjU0NSAxMzUuNjkzIDExOS45MDUgMTM0Ljk2SDEyMi42NDVDMTIyLjEyNSAxMzYuMjkzIDEyMS4yODUgMTM3LjMyIDEyMC4xMjUgMTM4LjA0QzExOC45NzkgMTM4Ljc2IDExNy42NjUgMTM5LjEyIDExNi4xODUgMTM5LjEyQzExNC44NzkgMTM5LjEyIDExMy42ODUgMTM4LjgyIDExMi42MDUgMTM4LjIyQzExMS41MjUgMTM3LjYwNyAxMTAuNjY1IDEzNi43NiAxMTAuMDI1IDEzNS42OEMxMDkuMzk5IDEzNC42IDEwOS4wODUgMTMzLjM4IDEwOS4wODUgMTMyLjAyWk0xMzkuOTU0IDEzMi4wMkMxMzkuOTU0IDEzMC42NiAxNDAuMjY3IDEyOS40NCAxNDAuODk0IDEyOC4zNkMxNDEuNTM0IDEyNy4yOCAxNDIuMzk0IDEyNi40NCAxNDMuNDc0IDEyNS44NEMxNDQuNTY3IDEyNS4yMjcgMTQ1Ljc2MSAxMjQuOTIgMTQ3LjA1NCAxMjQuOTJDMTQ4LjUzNCAxMjQuOTIgMTQ5Ljg0NyAxMjUuMjg3IDE1MC45OTQgMTI2LjAyQzE1Mi4xNTQgMTI2Ljc0IDE1Mi45OTQgMTI3Ljc2NyAxNTMuNTE0IDEyOS4xSDE1MC43NzRDMTUwLjQxNCAxMjguMzY3IDE0OS45MTQgMTI3LjgyIDE0OS4yNzQgMTI3LjQ2QzE0OC42MzQgMTI3LjEgMTQ3Ljg5NCAxMjYuOTIgMTQ3LjA1NCAxMjYuOTJDMTQ2LjEzNCAxMjYuOTIgMTQ1LjMxNCAxMjcuMTI3IDE0NC41OTQgMTI3LjU0QzE0My44NzQgMTI3Ljk1MyAxNDMuMzA3IDEyOC41NDcgMTQyLjg5NCAxMjkuMzJDMTQyLjQ5NCAxMzAuMDkzIDE0Mi4yOTQgMTMwLjk5MyAxNDIuMjk0IDEzMi4wMkMxNDIuMjk0IDEzMy4wNDcgMTQyLjQ5NCAxMzMuOTQ3IDE0Mi44OTQgMTM0LjcyQzE0My4zMDcgMTM1LjQ5MyAxNDMuODc0IDEzNi4wOTMgMTQ0LjU5NCAxMzYuNTJDMTQ1LjMxNCAxMzYuOTMzIDE0Ni4xMzQgMTM3LjE0IDE0Ny4wNTQgMTM3LjE0QzE0Ny44OTQgMTM3LjE0IDE0OC42MzQgMTM2Ljk2IDE0OS4yNzQgMTM2LjZDMTQ5LjkxNCAxMzYuMjQgMTUwLjQxNCAxMzUuNjkzIDE1MC43NzQgMTM0Ljk2SDE1My41MTRDMTUyLjk5NCAxMzYuMjkzIDE1Mi4xNTQgMTM3LjMyIDE1MC45OTQgMTM4LjA0QzE0OS44NDcgMTM4Ljc2IDE0OC41MzQgMTM5LjEyIDE0Ny4wNTQgMTM5LjEyQzE0NS43NDcgMTM5LjEyIDE0NC41NTQgMTM4LjgyIDE0My40NzQgMTM4LjIyQzE0Mi4zOTQgMTM3LjYwNyAxNDEuNTM0IDEzNi43NiAxNDAuODk0IDEzNS42OEMxNDAuMjY3IDEzNC42IDEzOS45NTQgMTMzLjM4IDEzOS45NTQgMTMyLjAyWk0xNzcuOTIzIDEzOS4xNEMxNzYuNjI5IDEzOS4xNCAxNzUuNDM2IDEzOC44NCAxNzQuMzQzIDEzOC4yNEMxNzMuMjYzIDEzNy42MjcgMTcyLjQwMyAxMzYuNzggMTcxLjc2MyAxMzUuN0MxNzEuMTM2IDEzNC42MDcgMTcwLjgyMyAxMzMuMzggMTcwLjgyMyAxMzIuMDJDMTcwLjgyMyAxMzAuNjYgMTcxLjEzNiAxMjkuNDQgMTcxLjc2MyAxMjguMzZDMTcyLjQwMyAxMjcuMjggMTczLjI2MyAxMjYuNDQgMTc0LjM0MyAxMjUuODRDMTc1LjQzNiAxMjUuMjI3IDE3Ni42MjkgMTI0LjkyIDE3Ny45MjMgMTI0LjkyQzE3OS4yMjkgMTI0LjkyIDE4MC40MjMgMTI1LjIyNyAxODEuNTAzIDEyNS44NEMxODIuNTk2IDEyNi40NCAxODMuNDU2IDEyNy4yOCAxODQuMDgzIDEyOC4zNkMxODQuNzA5IDEyOS40NCAxODUuMDIzIDEzMC42NiAxODUuMDIzIDEzMi4wMkMxODUuMDIzIDEzMy4zOCAxODQuNzA5IDEzNC42MDcgMTg0LjA4MyAxMzUuN0MxODMuNDU2IDEzNi43OCAxODIuNTk2IDEzNy42MjcgMTgxLjUwMyAxMzguMjRDMTgwLjQyMyAxMzguODQgMTc5LjIyOSAxMzkuMTQgMTc3LjkyMyAxMzkuMTRaTTE3Ny45MjMgMTM3LjE2QzE3OC44NDMgMTM3LjE2IDE3OS42NjMgMTM2Ljk1MyAxODAuMzgzIDEzNi41NEMxODEuMTAzIDEzNi4xMTMgMTgxLjY2MyAxMzUuNTEzIDE4Mi4wNjMgMTM0Ljc0QzE4Mi40NzYgMTMzLjk1MyAxODIuNjgzIDEzMy4wNDcgMTgyLjY4MyAxMzIuMDJDMTgyLjY4MyAxMzAuOTkzIDE4Mi40NzYgMTMwLjA5MyAxODIuMDYzIDEyOS4zMkMxODEuNjYzIDEyOC41NDcgMTgxLjEwMyAxMjcuOTUzIDE4MC4zODMgMTI3LjU0QzE3OS42NjMgMTI3LjEyNyAxNzguODQzIDEyNi45MiAxNzcuOTIzIDEyNi45MkMxNzcuMDAzIDEyNi45MiAxNzYuMTgzIDEyNy4xMjcgMTc1LjQ2MyAxMjcuNTRDMTc0Ljc0MyAxMjcuOTUzIDE3NC4xNzYgMTI4LjU0NyAxNzMuNzYzIDEyOS4zMkMxNzMuMzYzIDEzMC4wOTMgMTczLjE2MyAxMzAuOTkzIDE3My4xNjMgMTMyLjAyQzE3My4xNjMgMTMzLjA0NyAxNzMuMzYzIDEzMy45NTMgMTczLjc2MyAxMzQuNzRDMTc0LjE3NiAxMzUuNTEzIDE3NC43NDMgMTM2LjExMyAxNzUuNDYzIDEzNi41NEMxNzYuMTgzIDEzNi45NTMgMTc3LjAwMyAxMzcuMTYgMTc3LjkyMyAxMzcuMTZaTTIwNC45MjYgMTI1LjFWMTMzLjk2QzIwNC45MjYgMTM1LjAxMyAyMDUuMiAxMzUuODA3IDIwNS43NDYgMTM2LjM0QzIwNi4zMDYgMTM2Ljg3MyAyMDcuMDggMTM3LjE0IDIwOC4wNjYgMTM3LjE0QzIwOS4wNjYgMTM3LjE0IDIwOS44NCAxMzYuODczIDIxMC4zODYgMTM2LjM0QzIxMC45NDYgMTM1LjgwNyAyMTEuMjI2IDEzNS4wMTMgMjExLjIyNiAxMzMuOTZWMTI1LjFIMjEzLjUwNlYxMzMuOTJDMjEzLjUwNiAxMzUuMDUzIDIxMy4yNiAxMzYuMDEzIDIxMi43NjYgMTM2LjhDMjEyLjI3MyAxMzcuNTg3IDIxMS42MTMgMTM4LjE3MyAyMTAuNzg2IDEzOC41NkMyMDkuOTYgMTM4Ljk0NyAyMDkuMDQ2IDEzOS4xNCAyMDguMDQ2IDEzOS4xNEMyMDcuMDQ2IDEzOS4xNCAyMDYuMTMzIDEzOC45NDcgMjA1LjMwNiAxMzguNTZDMjA0LjQ5MyAxMzguMTczIDIwMy44NDYgMTM3LjU4NyAyMDMuMzY2IDEzNi44QzIwMi44ODYgMTM2LjAxMyAyMDIuNjQ2IDEzNS4wNTMgMjAyLjY0NiAxMzMuOTJWMTI1LjFIMjA0LjkyNlpNMjQzLjI5NSAxMzlIMjQxLjAxNUwyMzQuMTU1IDEyOC42MlYxMzlIMjMxLjg3NVYxMjUuMDhIMjM0LjE1NUwyNDEuMDE1IDEzNS40NFYxMjUuMDhIMjQzLjI5NVYxMzlaTTI3MC42NjkgMTI1LjFWMTI2Ljk2SDI2Ni45NjlWMTM5SDI2NC42ODlWMTI2Ljk2SDI2MC45NjlWMTI1LjFIMjcwLjY2OVpNMjkwLjY1OCAxMjUuMVYxMzlIMjg4LjM3OFYxMjUuMUgyOTAuNjU4Wk0zMjAuNDcyIDEzOUgzMTguMTkyTDMxMS4zMzIgMTI4LjYyVjEzOUgzMDkuMDUyVjEyNS4wOEgzMTEuMzMyTDMxOC4xOTIgMTM1LjQ0VjEyNS4wOEgzMjAuNDcyVjEzOVpNMzQ4LjkyNiAxMjkuMUMzNDguNTY2IDEyOC40MDcgMzQ4LjA2NiAxMjcuODg3IDM0Ny40MjYgMTI3LjU0QzM0Ni43ODYgMTI3LjE4IDM0Ni4wNDYgMTI3IDM0NS4yMDYgMTI3QzM0NC4yODYgMTI3IDM0My40NjYgMTI3LjIwNyAzNDIuNzQ2IDEyNy42MkMzNDIuMDI2IDEyOC4wMzMgMzQxLjQ1OSAxMjguNjIgMzQxLjA0NiAxMjkuMzhDMzQwLjY0NiAxMzAuMTQgMzQwLjQ0NiAxMzEuMDIgMzQwLjQ0NiAxMzIuMDJDMzQwLjQ0NiAxMzMuMDIgMzQwLjY0NiAxMzMuOTA3IDM0MS4wNDYgMTM0LjY4QzM0MS40NTkgMTM1LjQ0IDM0Mi4wMjYgMTM2LjAyNyAzNDIuNzQ2IDEzNi40NEMzNDMuNDY2IDEzNi44NTMgMzQ0LjI4NiAxMzcuMDYgMzQ1LjIwNiAxMzcuMDZDMzQ2LjQ0NiAxMzcuMDYgMzQ3LjQ1MiAxMzYuNzEzIDM0OC4yMjYgMTM2LjAyQzM0OC45OTkgMTM1LjMyNyAzNDkuNDcyIDEzNC4zODcgMzQ5LjY0NiAxMzMuMkgzNDQuNDI2VjEzMS4zOEgzNTIuMDg2VjEzMy4xNkMzNTEuOTM5IDEzNC4yNCAzNTEuNTUyIDEzNS4yMzMgMzUwLjkyNiAxMzYuMTRDMzUwLjMxMiAxMzcuMDQ3IDM0OS41MDYgMTM3Ljc3MyAzNDguNTA2IDEzOC4zMkMzNDcuNTE5IDEzOC44NTMgMzQ2LjQxOSAxMzkuMTIgMzQ1LjIwNiAxMzkuMTJDMzQzLjg5OSAxMzkuMTIgMzQyLjcwNiAxMzguODIgMzQxLjYyNiAxMzguMjJDMzQwLjU0NiAxMzcuNjA3IDMzOS42ODYgMTM2Ljc2IDMzOS4wNDYgMTM1LjY4QzMzOC40MTkgMTM0LjYgMzM4LjEwNiAxMzMuMzggMzM4LjEwNiAxMzIuMDJDMzM4LjEwNiAxMzAuNjYgMzM4LjQxOSAxMjkuNDQgMzM5LjA0NiAxMjguMzZDMzM5LjY4NiAxMjcuMjggMzQwLjU0NiAxMjYuNDQgMzQxLjYyNiAxMjUuODRDMzQyLjcxOSAxMjUuMjI3IDM0My45MTIgMTI0LjkyIDM0NS4yMDYgMTI0LjkyQzM0Ni42ODYgMTI0LjkyIDM0Ny45OTkgMTI1LjI4NyAzNDkuMTQ2IDEyNi4wMkMzNTAuMzA2IDEyNi43NCAzNTEuMTQ2IDEyNy43NjcgMzUxLjY2NiAxMjkuMUgzNDguOTI2WiIgZmlsbD0id2hpdGUiLz48L2c+PGRlZnM+PGNsaXBQYXRoIGlkPSJjbGlwMF8xNDAyXzEzIj48cmVjdCB3aWR0aD0iNDU3IiBoZWlnaHQ9IjI3MCIgZmlsbD0id2hpdGUiLz48L2NsaXBQYXRoPjwvZGVmcz48L3N2Zz4=";
+
+  const PHOTO_PLACEHOLDER_B64 = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA2MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iNiIgZmlsbD0iI2QyZTdkYiIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjIiIHI9IjEwIiBmaWxsPSIjOGViYTlmIi8+PHBhdGggZD0iTTEwIDUyYzAtMTEgOS0xOCAyMC0xOHMyMCA3IDIwIDE4IiBmaWxsPSIjOGViYTlmIi8+PHRleHQgeD0iMzAiIHk9IjU5IiBmb250LXNpemU9IjgiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIj5GT1RPPC90ZXh0Pjwvc3ZnPg==";
+
+  const LINKEDIN_ICON_B64 = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMjAgM0g0YTEgMSAwIDAgMC0xIDF2MTZhMSAxIDAgMCAwIDEgMWgxNmExIDEgMCAwIDAgMS0xVjRhMSAxIDAgMCAwLTEtMXpNOC41MiAxNy41SDZWMTBoMi41MnY3LjV6TTcuMjYgOC45MmExLjQ0IDEuNDQgMCAxIDEgMC0yLjg4IDEuNDQgMS40NCAwIDAgMSAwIDIuODh6TTE4IDE3LjVoLTIuNXYtMy42N2MwLS44NyAwLS4xNy0uMTEtMS4yMy0uMTEtMS4wNi0uNzMtMS4yNi0xLjE4LTEuMjZzLTEuMzguMzctMS4zOCAxLjY0VjE3LjVIMTBWMTBoMi40djEuMDJoLjAzYy4zNC0uNjQgMS4xNi0xLjMyIDIuMzktMS4zMiAyLjU2IDAgMy4xOCAxLjY4IDMuMTggMy44N1YxNy41eiIvPjwvc3ZnPg==";
+
+  const INSTAGRAM_ICON_B64 = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMTIgMi4xNjNjMy4yMDQgMCAzLjU4NC4wMTIgNC44NS4wNyAzLjI1Mi4xNDggNC43NzEgMS42OTEgNC45MTkgNC45MTkuMDU4IDEuMjY1LjA2OSAxLjY0NS4wNjkgNC44NDkgMCAzLjIwNS0uMDEyIDMuNTg0LS4wNjkgNC44NDktLjE0OSAzLjIyNS0xLjY2NCA0Ljc3MS00LjkxOSA0LjkxOS0xLjI2Ni4wNTgtMS42NDQuMDctNC44NS4wNy0zLjIwNCAwLTMuNTg0LS4wMTItNC44NDktLjA3LTMuMjYtLjE0OS00Ljc3MS0xLjY5OS00LjkxOS00LjkyLS4wNTgtMS4yNjUtLjA3LTEuNjQ0LS4wNy00Ljg0OSAwLTMuMjA0LjAxMy0zLjU4My4wNy00Ljg0OS4xNDktMy4yMjcgMS42NjQtNC43NzEgNC45MTktNC45MTkgMS4yNjYtLjA1NyAxLjY0NS0uMDY5IDQuODQ5LS4wNjl6TTEyIDBoLTEuMTU0Yy0yLjk2NCAwLTMuMzc1LjAxMy00LjU1OS4wNzItMy44LjE3NC02LjE5NSAyLjU3Mi02LjM2OCA2LjM2OUMuMDEzIDcuNjI1IDAgOC4wMzYgMCAxMnYuMDAxYzAgMy45NjQuMDEzIDQuMzc1LjA3MiA1LjU1OC4xNzQgMy43OTcgMi41NjggNi4xOTUgNi4zNjggNi4zNjhDNy42MjUgMjMuOTg3IDggMjQgMTIgMjRoLjAwMWMzLjk2NCAwIDQuMzc0LS4wMTMgNS41NTgtLjA3MiAzLjc5MS0uMTc0IDYuMTk4LTIuNTY5IDYuMzY4LTYuMzY4LjA1OS0xLjE4NC4wNzMtMS41OTUuMDczLTUuNTU5VjEyYzAtMy45NjQtLjAxMy00LjM3NS0uMDcyLTUuNTU5LS4xNjktMy43ODQtMi41NjMtNi4xOTUtNi4zNjgtNi4zNjhDMTYuMzc2LjAxMyAxNS45NjQgMCAxMiAwem0wIDUuODM4YTYuMTYyIDYuMTYyIDAgMSAwIDAgMTIuMzI0IDYuMTYyIDYuMTYyIDAgMCAwIDAtMTIuMzI0ek0xMiAxNmE0IDQgMCAxIDEgMC04IDQgNCAwIDAgMSAwIDh6bTYuNDA2LTExLjg0NWExLjQ0IDEuNDQgMCAxIDAgMCAyLjg4MSAxLjQ0IDEuNDQgMCAwIDAgMC0yLjg4MXoiLz48L3N2Zz4=";
+
+  let currentPhotoSrc = PHOTO_PLACEHOLDER_B64;
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function el(id) { return document.getElementById(id); }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function getValues() {
+    return {
+      naam:      el('f-naam').value.trim()      || '[VOORNAAM NAAM]',
+      titel:     el('f-titel').value.trim()     || '[FUNCTIETITEL]',
+      telefoon:  el('f-telefoon').value.trim()  || '[TELEFOONNUMMER]',
+      email:     el('f-email').value.trim()      || '[EMAIL]',
+      linkedin:  el('f-linkedin').value.trim(),
+      instagram: el('f-instagram').value.trim(),
+    };
+  }
+
+  function buildSignatureHTML(v) {
+    const naam     = escapeHtml(v.naam);
+    const titel    = escapeHtml(v.titel);
+    const telefoon = escapeHtml(v.telefoon);
+    const email    = escapeHtml(v.email);
+
+    const linkedinBtn = v.linkedin ? `
+              <td style="padding-right: 8px;">
+                <a href="${escapeHtml(v.linkedin)}" style="text-decoration: none;" target="_blank">
+                  <table width="28" height="28" cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                      <tr>
+                        <td width="28" height="28" align="center" valign="middle" style="background-color: #034c22; border-radius: 4px;">
+                          <img src="${LINKEDIN_ICON_B64}" alt="LinkedIn" width="14" height="14" style="display: block; border: 0;" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </a>
+              </td>` : '';
+
+    const instagramBtn = v.instagram ? `
+              <td>
+                <a href="${escapeHtml(v.instagram)}" style="text-decoration: none;" target="_blank">
+                  <table width="28" height="28" cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                      <tr>
+                        <td width="28" height="28" align="center" valign="middle" style="background-color: #034c22; border-radius: 4px;">
+                          <img src="${INSTAGRAM_ICON_B64}" alt="Instagram" width="14" height="14" style="display: block; border: 0;" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </a>
+              </td>` : '';
+
+    const socialRow = (v.linkedin || v.instagram) ? `
+        <!-- Social icons -->
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr>
+              ${linkedinBtn}
+              ${instagramBtn}
+            </tr>
+          </tbody>
+        </table>` : '';
+
+    return `<table width="500" cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #1a1a1a; max-width: 500px;">
+  <tbody>
+    <tr>
+      <!-- Green left border -->
+      <td width="4" style="background-color: #034c22; border-radius: 2px;">&nbsp;</td>
+      <td width="16">&nbsp;</td>
+      <td>
+
+        <!-- Top row: photo + name/title + SK mark -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr>
+              <!-- Profile photo -->
+              <td width="66" valign="top" style="padding-right: 16px; padding-top: 1px;">
+                <img
+                  src="${currentPhotoSrc}"
+                  alt="${naam}"
+                  width="58"
+                  height="58"
+                  style="display: block; border-radius: 6px; border: 2px solid #d2e7db; object-fit: cover;"
+                />
+              </td>
+
+              <!-- Name + title -->
+              <td valign="middle">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 17px; font-weight: bold; color: #1a1a1a; line-height: 1.2; padding-bottom: 3px;">
+                        ${naam}
+                      </td>
+                      <!-- SK logo pushed to right -->
+                      <td align="right" valign="top" rowspan="2" style="padding-left: 12px;">
+                        <img src="${LOGO_B64}" alt="SK Accounting" width="100" height="59" style="display: block; border: 0; background-color: #034c22; border-radius: 4px; padding: 6px;" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #034c22; line-height: 1.2; letter-spacing: 0.3px;">
+                        ${titel}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Divider -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr>
+              <td style="padding-top: 12px; padding-bottom: 12px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tbody>
+                    <tr>
+                      <td height="1" style="background-color: #d6e4db; font-size: 0; line-height: 0;">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Contact details -->
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <!-- Phone + Email -->
+            <tr>
+              <td style="padding-bottom: 5px;">
+                <table cellpadding="0" cellspacing="0" border="0">
+                  <tbody>
+                    <tr>
+                      <!-- Phone -->
+                      <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #444444; white-space: nowrap; padding-right: 20px;">
+                        <span style="color: #034c22;">&#9742;</span>&nbsp;
+                        <a href="tel:${telefoon}" style="color: #444444; text-decoration: none;">${telefoon}</a>
+                      </td>
+                      <!-- Email -->
+                      <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #444444; white-space: nowrap;">
+                        <span style="color: #034c22;">&#9993;</span>&nbsp;
+                        <a href="mailto:${email}" style="color: #034c22; text-decoration: none;">${email}</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <!-- Website -->
+            <tr>
+              <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #444444; padding-bottom: 5px;">
+                <span style="color: #034c22;">&#127760;</span>&nbsp;
+                <a href="https://www.sk-accounting.be" style="color: #444444; text-decoration: none;">sk-accounting.be</a>
+              </td>
+            </tr>
+            <!-- Address -->
+            <tr>
+              <td style="font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #444444; padding-bottom: 12px;">
+                <span style="color: #034c22;">&#128205;</span>&nbsp;Molenzicht 17, 2380 Ravels
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        ${socialRow}
+
+      </td>
+    </tr>
+  </tbody>
+</table>`;
+  }
+
+  function updateSignature() {
+    el('sig-wrapper').innerHTML = buildSignatureHTML(getValues());
+  }
+
+  // ── Photo upload ──────────────────────────────────────────────────────────
+  el('f-foto').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      currentPhotoSrc = ev.target.result;
+      const thumb = el('thumb');
+      thumb.src = currentPhotoSrc;
+      thumb.style.display = 'block';
+      el('no-photo-hint').style.display = 'none';
+      updateSignature();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ── Copy button ───────────────────────────────────────────────────────────
+  el('copy-btn').addEventListener('click', function() {
+    const html = buildSignatureHTML(getValues());
+    const btn = el('copy-btn');
+
+    function showFeedback() {
+      btn.textContent = 'Gekopieerd!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = 'Kopieer handtekening';
+        btn.classList.remove('copied');
+      }, 2000);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(html).then(showFeedback).catch(fallback);
+    } else {
+      fallback();
+    }
+
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = html;
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showFeedback();
+      } catch (err) {
+        alert('Kopiëren mislukt. Selecteer de handtekening in de preview en kopieer handmatig.');
+      }
+      document.body.removeChild(ta);
+    }
+  });
+
+  // ── Live input listeners ──────────────────────────────────────────────────
+  ['f-naam','f-titel','f-telefoon','f-email','f-linkedin','f-instagram']
+    .forEach(function(id) {
+      el(id).addEventListener('input', updateSignature);
+    });
+
+  // ── Initial render ────────────────────────────────────────────────────────
+  updateSignature();
+</script>
+</body>
+</html>
