@@ -7,7 +7,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-4 mb-7">
       <div className="w-7 h-px bg-gold" />
-      <span className="text-gold text-[10px] uppercase tracking-[0.28em]" style={{ fontFamily: 'var(--font-sans)' }}>
+      <span
+        className="text-gold text-[10px] uppercase tracking-[0.28em]"
+        style={{ fontFamily: 'var(--font-sans)' }}
+      >
         {children}
       </span>
     </div>
@@ -19,7 +22,7 @@ const fallbackMembers = [
     id: 'fallback-1',
     name: 'Stef Kempenaers',
     role: 'Zaakvoerder & Erkend Boekhouder',
-    bio: 'Stef richtte SK Accounting op in 2008 met een eenvoudig principe: elke klant verdient een boekhouder die écht beschikbaar is. Met meer dan 20 jaar ervaring in de Belgische boekhoudwetgeving is hij de stuwende kracht achter het kantoor. Hij helpt zelfstandigen en kmo\'s niet alleen met hun cijfers, maar denkt actief mee over de toekomst van hun onderneming.',
+    bio: "Stef richtte SK Accounting op in 2008 met een eenvoudig principe: elke klant verdient een boekhouder die écht beschikbaar is. Met meer dan 20 jaar ervaring in de Belgische boekhoudwetgeving is hij de stuwende kracht achter het kantoor. Hij helpt zelfstandigen en kmo's niet alleen met hun cijfers, maar denkt actief mee over de toekomst van hun onderneming.",
     photo: null,
     initials: 'SK',
   },
@@ -96,7 +99,8 @@ export default async function TeamPage() {
         <div
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)',
+            backgroundImage:
+              'repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)',
             backgroundSize: '24px 24px',
           }}
         />
@@ -106,9 +110,16 @@ export default async function TeamPage() {
           </div>
           <h1
             className="text-white max-w-2xl anim-2"
-            style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(48px, 7vw, 80px)', lineHeight: 1 }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 300,
+              fontSize: 'clamp(48px, 7vw, 80px)',
+              lineHeight: 1,
+            }}
           >
-            De mensen<br />achter <em>SK Accounting</em>
+            De mensen
+            <br />
+            achter <em>SK Accounting</em>
           </h1>
           <p className="font-sans text-white/55 text-lg leading-relaxed mt-8 max-w-lg anim-3">
             Boekhouding is mensenwerk. Elk lid van ons team draagt bij aan een persoonlijke,
@@ -125,20 +136,28 @@ export default async function TeamPage() {
               <SectionLabel>Onze filosofie</SectionLabel>
               <h2
                 className="text-charcoal"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(36px, 4.5vw, 56px)', lineHeight: 1.05 }}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 300,
+                  fontSize: 'clamp(36px, 4.5vw, 56px)',
+                  lineHeight: 1.05,
+                }}
               >
-                Geen dossier,<br />maar een <em>relatie</em>
+                Geen dossier,
+                <br />
+                maar een <em>relatie</em>
               </h2>
             </div>
             <div className="lg:pt-16 space-y-5 font-sans text-[15px] text-charcoal/60 leading-relaxed">
               <p>
                 Bij SK Accounting werkt u altijd met een vaste contactpersoon die uw onderneming
-                door en door kent. We geloven dat goede boekhouding begint bij een echte vertrouwensrelatie —
-                niet bij een anoniem ticketsysteem of een wisselend team van gezichten.
+                door en door kent. We geloven dat goede boekhouding begint bij een echte
+                vertrouwensrelatie — niet bij een anoniem ticketsysteem of een wisselend team van
+                gezichten.
               </p>
               <p>
-                Elk teamlid volgt permanente vorming en is gespecialiseerd in specifieke sectoren
-                en thema's. Zo combineert u de voordelen van een persoonlijk kantoor met de kennis
+                Elk teamlid volgt permanente vorming en is gespecialiseerd in specifieke sectoren en
+                thema&apos;s. Zo combineert u de voordelen van een persoonlijk kantoor met de kennis
                 en slagkracht van een volledig team.
               </p>
             </div>
@@ -153,7 +172,12 @@ export default async function TeamPage() {
             <SectionLabel>Het team</SectionLabel>
             <h2
               className="text-charcoal"
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(36px, 4.5vw, 56px)', lineHeight: 1 }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontSize: 'clamp(36px, 4.5vw, 56px)',
+                lineHeight: 1,
+              }}
             >
               Maak kennis met iedereen
             </h2>
@@ -193,10 +217,16 @@ export default async function TeamPage() {
             <div className="w-px h-16 bg-gold/40 mx-auto mb-12" />
             <blockquote
               className="text-charcoal"
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(28px, 3.5vw, 44px)', lineHeight: 1.2 }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontSize: 'clamp(28px, 3.5vw, 44px)',
+                lineHeight: 1.2,
+              }}
             >
-              "Een goede boekhouder kent uw cijfers.<br />
-              Een <em>uitstekende</em> boekhouder kent uw verhaal."
+              Een goede boekhouder kent uw cijfers.
+              <br />
+              Een <em>uitstekende</em> boekhouder kent uw verhaal.
             </blockquote>
             <div className="w-px h-16 bg-gold/40 mx-auto mt-12 mb-6" />
             <p className="font-sans text-charcoal/40 text-[11px] uppercase tracking-[0.28em]">
@@ -210,19 +240,29 @@ export default async function TeamPage() {
       <section className="bg-primary-dark py-32 relative overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(ellipse at 80% 50%, rgba(4,90,40,0.35) 0%, transparent 60%)' }}
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse at 80% 50%, rgba(4,90,40,0.35) 0%, transparent 60%)',
+          }}
         />
         <div className="relative max-w-7xl mx-auto px-8">
           <SectionLabel>Samenwerken</SectionLabel>
           <h2
             className="text-white mb-8 max-w-2xl"
-            style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1 }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 300,
+              fontSize: 'clamp(40px, 6vw, 72px)',
+              lineHeight: 1,
+            }}
           >
-            Klaar om uw vaste<br /><em>boekhouder te ontmoeten?</em>
+            Klaar om uw vaste
+            <br />
+            <em>boekhouder te ontmoeten?</em>
           </h2>
           <p className="font-sans text-white/50 text-lg mb-12 max-w-md leading-relaxed">
-            Neem contact op voor een vrijblijvend kennismakingsgesprek.
-            We koppelen u aan het teamlid dat het beste bij uw sector en noden past.
+            Neem contact op voor een vrijblijvend kennismakingsgesprek. We koppelen u aan het
+            teamlid dat het beste bij uw sector en noden past.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link
@@ -281,15 +321,25 @@ function MemberCard({
             <div
               className="absolute inset-0 opacity-[0.04]"
               style={{
-                backgroundImage: 'repeating-linear-gradient(45deg, #034c22 0, #034c22 1px, transparent 0, transparent 50%)',
+                backgroundImage:
+                  'repeating-linear-gradient(45deg, #034c22 0, #034c22 1px, transparent 0, transparent 50%)',
                 backgroundSize: '20px 20px',
               }}
             />
             <span
               className="relative text-charcoal/20 select-none"
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: '5rem', lineHeight: 1 }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontSize: '5rem',
+                lineHeight: 1,
+              }}
             >
-              {initials ?? name.split(' ').map((n) => n[0]).join('')}
+              {initials ??
+                name
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')}
             </span>
           </div>
         )}
@@ -310,7 +360,12 @@ function MemberCard({
 
         <h3
           className="text-charcoal mb-1"
-          style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(22px, 2.5vw, 28px)', lineHeight: 1.1 }}
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 500,
+            fontSize: 'clamp(22px, 2.5vw, 28px)',
+            lineHeight: 1.1,
+          }}
         >
           {name}
         </h3>
@@ -321,11 +376,7 @@ function MemberCard({
           {role}
         </p>
 
-        {bio && (
-          <p className="font-sans text-sm text-charcoal/55 leading-relaxed">
-            {bio}
-          </p>
-        )}
+        {bio && <p className="font-sans text-sm text-charcoal/55 leading-relaxed">{bio}</p>}
       </div>
     </div>
   )
