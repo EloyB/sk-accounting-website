@@ -20,7 +20,6 @@ jobs:
             cd /var/www/sk-accounting
             git pull origin main
             pnpm install
-            pnpm payload migrate
             pnpm generate:importmap
             pnpm build
             pm2 restart sk-accounting --update-env
