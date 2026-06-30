@@ -10,7 +10,7 @@ export default function ContactForm() {
 
   if (state.status === 'success') {
     return (
-      <div className="border border-gold/30 bg-gold/5 p-10">
+      <div role="status" className="border border-gold/30 bg-gold/5 p-10">
         <div className="w-7 h-px bg-gold mb-6" />
         <h3
           className="text-charcoal mb-3"
@@ -27,6 +27,14 @@ export default function ContactForm() {
 
   return (
     <form action={action} className="space-y-6">
+      {/* Honeypot — verborgen voor mensen, ingevuld door bots. Niet aria-zichtbaar. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label>
+          Bedrijf
+          <input name="company" type="text" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
           <label className="block font-sans text-[11px] uppercase tracking-[0.18em] text-charcoal/50 mb-2">
@@ -80,7 +88,9 @@ export default function ContactForm() {
       </div>
 
       {state.status === 'error' && (
-        <p className="font-sans text-sm text-red-600">{state.message}</p>
+        <p role="alert" className="font-sans text-sm text-red-600">
+          {state.message}
+        </p>
       )}
 
       <button

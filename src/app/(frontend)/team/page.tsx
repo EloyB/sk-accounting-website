@@ -1,7 +1,15 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+
+export const metadata: Metadata = {
+  title: 'Team',
+  description:
+    'Boekhouding is mensenwerk. Maak kennis met het team achter SK Accounting — uw vaste, betrokken aanspreekpunt voor boekhouding en fiscaal advies.',
+  alternates: { canonical: '/team' },
+}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -230,7 +238,7 @@ export default async function TeamPage() {
             </blockquote>
             <div className="w-px h-16 bg-gold/40 mx-auto mt-12 mb-6" />
             <p className="font-sans text-charcoal/40 text-[11px] uppercase tracking-[0.28em]">
-              Stef Kempenaers — Zaakvoerder SK Accounting
+              Steven Kaers — Zaakvoerder SK Accounting
             </p>
           </div>
         </div>
@@ -312,7 +320,7 @@ function MemberCard({
             src={photoUrl}
             alt={photoAlt ?? name}
             fill
-            className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
+            className="object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         ) : (

@@ -1,6 +1,14 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+
+export const metadata: Metadata = {
+  title: { absolute: "SK Accounting — Boekhouding & fiscaal advies voor zelfstandigen en kmo's" },
+  description:
+    "Persoonlijke boekhouding, btw-aangiftes, loonadministratie en proactief fiscaal advies voor zelfstandigen en kmo's in België. Maak vandaag nog een afspraak.",
+  alternates: { canonical: '/' },
+}
 
 // ─── Decorative divider ───────────────────────────────────────────────────────
 

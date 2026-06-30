@@ -1,6 +1,14 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+
+export const metadata: Metadata = {
+  title: 'Diensten',
+  description:
+    'Van boekhouding en jaarrekeningen tot btw-aangiftes, loonadministratie, fiscale optimalisatie en bedrijfsoprichting — ontdek het volledige dienstenaanbod van SK Accounting.',
+  alternates: { canonical: '/diensten' },
+}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (

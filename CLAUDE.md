@@ -1,3 +1,9 @@
+---
+name: SK Accounting
+summary: Marketingwebsite voor een Belgisch boekhoudkantoor (diensten, team, expertise; NL).
+# url:
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.

@@ -12,6 +12,13 @@ export async function submitContactForm(
   _prev: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  // Honeypot: bots vullen dit verborgen veld in. Doe alsof het gelukt is zodat
+  // de bot geen feedback krijgt, maar sla niets op.
+  const honeypot = (formData.get('company') as string | null)?.trim()
+  if (honeypot) {
+    return { status: 'success' }
+  }
+
   const name    = (formData.get('name')    as string | null)?.trim()
   const email   = (formData.get('email')   as string | null)?.trim()
   const phone   = (formData.get('phone')   as string | null)?.trim()

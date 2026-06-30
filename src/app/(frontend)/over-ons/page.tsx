@@ -1,7 +1,15 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+
+export const metadata: Metadata = {
+  title: 'Over ons',
+  description:
+    'Maak kennis met SK Accounting: een persoonlijk boekhoudkantoor gebouwd op vertrouwen, integriteit en betrokkenheid. Ontdek ons verhaal, onze waarden en onze geschiedenis.',
+  alternates: { canonical: '/over-ons' },
+}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -92,9 +100,23 @@ export default async function OverOnsPage() {
               </h2>
             </div>
             <div className="lg:pt-20">
-              {content.onsVerhaalDescription && (
+              {content.onsVerhaalDescription ? (
                 <div className="font-sans text-charcoal/60 text-[15px] leading-relaxed space-y-5 [&_strong]:text-charcoal [&_em]:italic">
                   <RichText data={content.onsVerhaalDescription} />
+                </div>
+              ) : (
+                <div className="font-sans text-charcoal/60 text-[15px] leading-relaxed space-y-5">
+                  <p>
+                    SK Accounting is uitgegroeid tot een vertrouwd boekhoudkantoor voor zelfstandigen
+                    en kmo&apos;s in heel België. Wat begon als een klein kantoor, is vandaag een hecht
+                    team dat klanten met raad en daad bijstaat — van de dagelijkse boekhouding tot
+                    strategisch fiscaal advies.
+                  </p>
+                  <p>
+                    Onze aanpak is altijd dezelfde gebleven: persoonlijk, proactief en transparant. We
+                    geloven dat goede boekhouding begint bij een echte vertrouwensrelatie, waarbij u
+                    altijd terechtkunt bij een vaste contactpersoon die uw onderneming door en door kent.
+                  </p>
                 </div>
               )}
             </div>

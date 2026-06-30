@@ -1,6 +1,14 @@
+import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import ContactForm from './ContactForm'
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description:
+    'Neem contact op met SK Accounting voor een vrijblijvend kennismakingsgesprek. Bel, mail of vul het contactformulier in — we helpen u graag verder.',
+  alternates: { canonical: '/contact' },
+}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (

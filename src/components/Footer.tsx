@@ -1,11 +1,27 @@
 import Link from 'next/link'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
-export default function Footer() {
+export default async function Footer() {
+  // Contactgegevens uit Site Settings (CMS). Valt terug op nette placeholders
+  // zolang de gegevens nog niet zijn ingevuld.
+  let phone: string | null = null
+  let email: string | null = null
+  let address: string | null = null
+
+  try {
+    const payload = await getPayload({ config })
+    const settings = await payload.findGlobal({ slug: 'site-settings' })
+    phone = settings.phone || null
+    email = settings.email || null
+    address = settings.address || null
+  } catch {
+    // Geen DB-verbinding (bv. tijdens build) — toon de placeholders hieronder.
+  }
+
   return (
     <footer className="bg-primary-dark text-white/70">
-
       <div className="max-w-7xl mx-auto px-8">
-
         {/* Top — brand + CTA */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 pt-20 pb-14 border-b border-white/10">
           <div>
@@ -26,8 +42,8 @@ export default function Footer() {
               </span>
             </Link>
             <p className="font-sans text-sm leading-relaxed max-w-xs text-white/50">
-              Uw betrouwbare partner voor boekhouding en fiscaal advies.
-              Persoonlijk, proactief en digitaal.
+              Uw betrouwbare partner voor boekhouding en fiscaal advies. Persoonlijk, proactief en
+              digitaal.
             </p>
           </div>
           <Link
@@ -45,9 +61,17 @@ export default function Footer() {
               Navigatie
             </h3>
             <ul className="space-y-3">
-              {[['Over ons', '/over-ons'], ['Diensten', '/diensten'], ['Team', '/team'], ['Contact', '/contact']].map(([label, href]) => (
+              {[
+                ['Over ons', '/over-ons'],
+                ['Diensten', '/diensten'],
+                ['Team', '/team'],
+                ['Contact', '/contact'],
+              ].map(([label, href]) => (
                 <li key={href}>
-                  <Link href={href} className="font-sans text-sm text-white/60 hover:text-white transition-colors">
+                  <Link
+                    href={href}
+                    className="font-sans text-sm text-white/60 hover:text-white transition-colors"
+                  >
                     {label}
                   </Link>
                 </li>
@@ -60,9 +84,18 @@ export default function Footer() {
               Diensten
             </h3>
             <ul className="space-y-3">
-              {['Boekhouding', 'Btw-aangiftes', 'Loonadministratie', 'Fiscaal advies', 'Bedrijfsoprichting'].map((s) => (
+              {[
+                'Boekhouding',
+                'Btw-aangiftes',
+                'Loonadministratie',
+                'Fiscaal advies',
+                'Bedrijfsoprichting',
+              ].map((s) => (
                 <li key={s}>
-                  <Link href="/diensten" className="font-sans text-sm text-white/60 hover:text-white transition-colors">
+                  <Link
+                    href="/diensten"
+                    className="font-sans text-sm text-white/60 hover:text-white transition-colors"
+                  >
                     {s}
                   </Link>
                 </li>
@@ -75,15 +108,25 @@ export default function Footer() {
               Contact
             </h3>
             <ul className="space-y-4">
-              <li className="font-sans text-sm text-white/60">[Adres], België</li>
-              <li>
-                <a href="tel:+32" className="font-sans text-sm text-white/60 hover:text-white transition-colors">
-                  +32 (0)…
-                </a>
+              <li className="font-sans text-sm text-white/60 whitespace-pre-line">
+                {address || 'Adres nog in te stellen, België'}
               </li>
+              {phone && (
+                <li>
+                  <a
+                    href={`tel:${phone.replace(/\s/g, '')}`}
+                    className="font-sans text-sm text-white/60 hover:text-white transition-colors"
+                  >
+                    {phone}
+                  </a>
+                </li>
+              )}
               <li>
-                <a href="mailto:info@skaccounting.be" className="font-sans text-sm text-white/60 hover:text-white transition-colors">
-                  info@skaccounting.be
+                <a
+                  href={`mailto:${email || 'info@sk-accounting.be'}`}
+                  className="font-sans text-sm text-white/60 hover:text-white transition-colors"
+                >
+                  {email || 'info@sk-accounting.be'}
                 </a>
               </li>
             </ul>
@@ -97,7 +140,7 @@ export default function Footer() {
           </p>
           <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-white/30">
             Gebouwd door{' '}
-            <a href="https://studioswyft.be" className="hover:text-white/70 transition-colors">
+            <a href="https://studio-swyft.be" className="hover:text-white/70 transition-colors">
               Studio Swyft
             </a>
           </p>
