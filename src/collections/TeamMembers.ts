@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollectionChange, revalidateCollectionDelete } from '../lib/revalidate'
 
 export const TeamMembers: CollectionConfig = {
   slug: 'team-members',
@@ -7,6 +8,11 @@ export const TeamMembers: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    // Team members appear on /team and in the homepage preview.
+    afterChange: [revalidateCollectionChange(['/team', '/'])],
+    afterDelete: [revalidateCollectionDelete(['/team', '/'])],
   },
   fields: [
     {

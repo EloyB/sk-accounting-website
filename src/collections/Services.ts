@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollectionChange, revalidateCollectionDelete } from '../lib/revalidate'
 
 export const Services: CollectionConfig = {
   slug: 'services',
@@ -7,6 +8,11 @@ export const Services: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    // Services appear on /diensten and in the homepage overview.
+    afterChange: [revalidateCollectionChange(['/diensten', '/'])],
+    afterDelete: [revalidateCollectionDelete(['/diensten', '/'])],
   },
   fields: [
     {

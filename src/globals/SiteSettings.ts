@@ -1,9 +1,14 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateGlobal } from '../lib/revalidate'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   access: {
     read: () => true,
+  },
+  hooks: {
+    // Contact info appears in the shared layout (header/footer) and on /contact.
+    afterChange: [revalidateGlobal(['/'], { layout: true })],
   },
   fields: [
     {
