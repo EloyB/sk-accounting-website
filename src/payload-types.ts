@@ -1125,6 +1125,12 @@ export interface HomepageContent {
  */
 export interface OverOnsContent {
   id: number;
+  heroLabel?: string | null;
+  /**
+   * Regeleindes worden overgenomen.
+   */
+  heroHeading?: string | null;
+  onsVerhaalLabel?: string | null;
   onsVerhaalTitle?: string | null;
   onsVerhaalDescription?: {
     root: {
@@ -1141,6 +1147,45 @@ export interface OverOnsContent {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Laat leeg om de standaardcijfers te tonen.
+   */
+  stats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  waardenLabel?: string | null;
+  waardenHeading?: string | null;
+  /**
+   * Laat leeg om de standaardwaarden te tonen. Nummering gebeurt automatisch.
+   */
+  waarden?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  geschiedenisLabel?: string | null;
+  geschiedenisHeading?: string | null;
+  /**
+   * Laat leeg om de standaard tijdlijn te tonen.
+   */
+  milestones?:
+    | {
+        year: string;
+        event: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaLabel?: string | null;
+  ctaHeading?: string | null;
+  ctaText?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaSecondaryLabel?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1176,8 +1221,41 @@ export interface HomepageContentSelect<T extends boolean = true> {
  * via the `definition` "over-ons-content_select".
  */
 export interface OverOnsContentSelect<T extends boolean = true> {
+  heroLabel?: T;
+  heroHeading?: T;
+  onsVerhaalLabel?: T;
   onsVerhaalTitle?: T;
   onsVerhaalDescription?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  waardenLabel?: T;
+  waardenHeading?: T;
+  waarden?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  geschiedenisLabel?: T;
+  geschiedenisHeading?: T;
+  milestones?:
+    | T
+    | {
+        year?: T;
+        event?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  ctaHeading?: T;
+  ctaText?: T;
+  ctaPrimaryLabel?: T;
+  ctaSecondaryLabel?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
