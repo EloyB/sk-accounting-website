@@ -20,6 +20,9 @@ jobs:
             cd /var/www/sk-accounting
             git pull origin main
             pnpm install
+            # Apply pending Payload migrations. `yes |` auto-confirms the
+            # dev-push warning so the SSH session never hangs on a prompt.
+            yes | pnpm payload migrate
             pnpm generate:importmap
             pnpm build
             pm2 restart sk-accounting --update-env
