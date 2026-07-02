@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -375,23 +376,43 @@ export default async function HomePage() {
             {/* Team photo grid — shows CMS members when available, falls back to placeholders */}
             <div className="grid grid-cols-2 gap-4">
               {teamMembers.length > 0 ? (
-                teamMembers.map((member, i) => (
-                  <div
-                    key={member.id}
-                    className={`bg-charcoal/8 aspect-[3/4] flex flex-col justify-end p-4 ${i % 3 === 0 ? 'mt-10' : ''}`}
-                  >
-                    <div className="w-10 h-px bg-charcoal/25 mb-2" />
-                    <p
-                      className="text-charcoal/70 text-sm font-medium"
-                      style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
+                teamMembers.map((member, i) => {
+                  const photo = member.photo && typeof member.photo === 'object' ? member.photo : null
+                  const photoUrl = photo?.url ?? null
+                  return (
+                    <div
+                      key={member.id}
+                      className={`relative overflow-hidden bg-charcoal/8 aspect-[3/4] flex flex-col justify-end p-4 ${i % 3 === 0 ? 'mt-10' : ''}`}
                     >
-                      {member.name}
-                    </p>
-                    {member.role && (
-                      <p className="font-sans text-charcoal/40 text-xs mt-0.5">{member.role}</p>
-                    )}
-                  </div>
-                ))
+                      {photoUrl && (
+                        <>
+                          <Image
+                            src={photoUrl}
+                            alt={photo?.alt ?? member.name}
+                            fill
+                            sizes="(max-width: 1024px) 50vw, 25vw"
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/10 to-transparent" />
+                        </>
+                      )}
+                      <div className="relative">
+                        <div className={`w-10 h-px mb-2 ${photoUrl ? 'bg-white/60' : 'bg-charcoal/25'}`} />
+                        <p
+                          className={`text-sm font-medium ${photoUrl ? 'text-white' : 'text-charcoal/70'}`}
+                          style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
+                        >
+                          {member.name}
+                        </p>
+                        {member.role && (
+                          <p className={`font-sans text-xs mt-0.5 ${photoUrl ? 'text-white/70' : 'text-charcoal/40'}`}>
+                            {member.role}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })
               ) : (
                 [
                   { offset: 'mt-10', label: 'Teamlid' },
