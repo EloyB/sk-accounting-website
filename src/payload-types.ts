@@ -1107,17 +1107,26 @@ export interface SiteSetting {
  */
 export interface HomepageContent {
   id: number;
+  heroEyebrow?: string | null;
+  /**
+   * Regeleindes worden overgenomen. Laat leeg voor de standaardtitel.
+   */
   heroHeading?: string | null;
   heroSubtext?: string | null;
   heroCtaLabel?: string | null;
+  heroCtaSecondaryLabel?: string | null;
   /**
    * Bijv. "15+"
    */
   statYears?: string | null;
+  statYearsLabel?: string | null;
   /**
    * Bijv. "200+"
    */
   statClients?: string | null;
+  statClientsLabel?: string | null;
+  statThird?: string | null;
+  statThirdLabel?: string | null;
   aanpakLabel?: string | null;
   aanpakHeading?: string | null;
   /**
@@ -1130,6 +1139,33 @@ export interface HomepageContent {
         id?: string | null;
       }[]
     | null;
+  dienstenLabel?: string | null;
+  dienstenHeading?: string | null;
+  dienstenLinkLabel?: string | null;
+  teamLabel?: string | null;
+  /**
+   * Regeleindes worden overgenomen. Laat leeg voor de standaardtitel.
+   */
+  teamHeading?: string | null;
+  teamText?: string | null;
+  /**
+   * Laat leeg om de standaardpunten te tonen.
+   */
+  teamBullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  teamLinkLabel?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Regeleindes worden overgenomen. Laat leeg voor de standaardtitel.
+   */
+  ctaHeading?: string | null;
+  ctaText?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaSecondaryLabel?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1183,18 +1219,6 @@ export interface OverOnsContent {
         id?: string | null;
       }[]
     | null;
-  geschiedenisLabel?: string | null;
-  geschiedenisHeading?: string | null;
-  /**
-   * Laat leeg om de standaard tijdlijn te tonen.
-   */
-  milestones?:
-    | {
-        year: string;
-        event: string;
-        id?: string | null;
-      }[]
-    | null;
   ctaLabel?: string | null;
   ctaHeading?: string | null;
   ctaText?: string | null;
@@ -1242,11 +1266,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "homepage-content_select".
  */
 export interface HomepageContentSelect<T extends boolean = true> {
+  heroEyebrow?: T;
   heroHeading?: T;
   heroSubtext?: T;
   heroCtaLabel?: T;
+  heroCtaSecondaryLabel?: T;
   statYears?: T;
+  statYearsLabel?: T;
   statClients?: T;
+  statClientsLabel?: T;
+  statThird?: T;
+  statThirdLabel?: T;
   aanpakLabel?: T;
   aanpakHeading?: T;
   aanpak?:
@@ -1256,6 +1286,24 @@ export interface HomepageContentSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  dienstenLabel?: T;
+  dienstenHeading?: T;
+  dienstenLinkLabel?: T;
+  teamLabel?: T;
+  teamHeading?: T;
+  teamText?: T;
+  teamBullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  teamLinkLabel?: T;
+  ctaLabel?: T;
+  ctaHeading?: T;
+  ctaText?: T;
+  ctaPrimaryLabel?: T;
+  ctaSecondaryLabel?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1284,15 +1332,6 @@ export interface OverOnsContentSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
-        id?: T;
-      };
-  geschiedenisLabel?: T;
-  geschiedenisHeading?: T;
-  milestones?:
-    | T
-    | {
-        year?: T;
-        event?: T;
         id?: T;
       };
   ctaLabel?: T;

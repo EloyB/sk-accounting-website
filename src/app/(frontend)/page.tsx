@@ -26,6 +26,21 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Render CMS text with line breaks (\n → <br />)
+function MultiLine({ text }: { text: string }) {
+  const lines = text.split('\n')
+  return (
+    <>
+      {lines.map((line, i) => (
+        <span key={i}>
+          {line}
+          {i < lines.length - 1 && <br />}
+        </span>
+      ))}
+    </>
+  )
+}
+
 // ─── Defaults (shown when CMS fields are empty) ───────────────────────────────
 
 const defaultServices = [
@@ -55,12 +70,22 @@ export default async function HomePage() {
     payload.find({ collection: 'team-members', sort: 'order', limit: 4 }),
   ])
 
+  // Hero
+  const heroEyebrow = homepageContent.heroEyebrow || 'Boekhouding · Fiscaliteit · Advies'
   const heroHeading = homepageContent.heroHeading || null
   const heroSubtext = homepageContent.heroSubtext || null
   const heroCtaLabel = homepageContent.heroCtaLabel || 'Maak een afspraak'
-  const statYears = homepageContent.statYears || '15+'
-  const statClients = homepageContent.statClients || '200+'
+  const heroCtaSecondaryLabel = homepageContent.heroCtaSecondaryLabel || 'Onze diensten'
 
+  // Cijfers
+  const statYears = homepageContent.statYears || '15+'
+  const statYearsLabel = homepageContent.statYearsLabel || 'Jaar ervaring'
+  const statClients = homepageContent.statClients || '200+'
+  const statClientsLabel = homepageContent.statClientsLabel || 'Tevreden klanten'
+  const statThird = homepageContent.statThird || '100%'
+  const statThirdLabel = homepageContent.statThirdLabel || 'Persoonlijke aanpak'
+
+  // Waarom SK Accounting
   const aanpakLabel = homepageContent.aanpakLabel || 'Onze aanpak'
   const aanpakHeading = homepageContent.aanpakHeading || 'Waarom SK Accounting?'
   const valueProps = homepageContent.aanpak?.length
@@ -70,6 +95,31 @@ export default async function HomePage() {
         desc: p.description,
       }))
     : defaultValueProps
+
+  // Diensten
+  const dienstenLabel = homepageContent.dienstenLabel || 'Wat we doen'
+  const dienstenHeading = homepageContent.dienstenHeading || 'Onze diensten'
+  const dienstenLinkLabel = homepageContent.dienstenLinkLabel || 'Alle diensten'
+
+  // Team teaser
+  const teamLabel = homepageContent.teamLabel || 'Ons team'
+  const teamHeading = homepageContent.teamHeading || null
+  const teamText = homepageContent.teamText || null
+  const teamBullets = homepageContent.teamBullets?.length
+    ? homepageContent.teamBullets.map((b) => b.text)
+    : [
+        'Vaste persoonlijke boekhouder',
+        'Vlot bereikbaar via telefoon en e-mail',
+        'Proactieve opvolging van uw dossier',
+      ]
+  const teamLinkLabel = homepageContent.teamLinkLabel || 'Ontmoet ons team'
+
+  // CTA
+  const ctaLabel = homepageContent.ctaLabel || 'Neem contact op'
+  const ctaHeading = homepageContent.ctaHeading || null
+  const ctaText = homepageContent.ctaText || null
+  const ctaPrimaryLabel = homepageContent.ctaPrimaryLabel || 'Neem contact op'
+  const ctaSecondaryLabel = homepageContent.ctaSecondaryLabel || 'Onze diensten'
 
   const services = servicesResult.docs.length > 0
     ? servicesResult.docs.map((s, i) => ({
@@ -113,7 +163,7 @@ export default async function HomePage() {
           <div className="max-w-4xl">
 
             <div className="anim-1">
-              <SectionLabel>Boekhouding · Fiscaliteit · Advies</SectionLabel>
+              <SectionLabel>{heroEyebrow}</SectionLabel>
             </div>
 
             <h1
@@ -125,7 +175,7 @@ export default async function HomePage() {
               }}
             >
               {heroHeading ? (
-                heroHeading
+                <MultiLine text={heroHeading} />
               ) : (
                 <>Boekhouding<br />die <em>werkt</em><br />voor u</>
               )}
@@ -150,7 +200,7 @@ export default async function HomePage() {
                 href="/diensten"
                 className="font-sans text-[12px] font-medium uppercase tracking-[0.18em] border border-white/25 text-white px-8 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-300"
               >
-                Onze diensten
+                {heroCtaSecondaryLabel}
               </Link>
             </div>
           </div>
@@ -161,9 +211,9 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-8">
             <div className="grid grid-cols-3 divide-x divide-white/10 anim-5">
               {[
-                { value: statYears, label: 'Jaar ervaring' },
-                { value: statClients, label: 'Tevreden klanten' },
-                { value: '100%', label: 'Persoonlijke aanpak' },
+                { value: statYears, label: statYearsLabel },
+                { value: statClients, label: statClientsLabel },
+                { value: statThird, label: statThirdLabel },
               ].map((stat) => (
                 <div key={stat.label} className="py-8 px-8 first:pl-0">
                   <div
@@ -235,19 +285,19 @@ export default async function HomePage() {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
             <div>
-              <SectionLabel>Wat we doen</SectionLabel>
+              <SectionLabel>{dienstenLabel}</SectionLabel>
               <h2
                 className="text-charcoal"
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 60px)', lineHeight: 1 }}
               >
-                Onze diensten
+                {dienstenHeading}
               </h2>
             </div>
             <Link
               href="/diensten"
               className="font-sans text-[11px] uppercase tracking-[0.22em] text-primary flex items-center gap-3 hover:gap-5 transition-all duration-300 self-start md:self-end whitespace-nowrap pb-1"
             >
-              Alle diensten <span className="text-base">→</span>
+              {dienstenLinkLabel} <span className="text-base">→</span>
             </Link>
           </div>
 
@@ -289,25 +339,24 @@ export default async function HomePage() {
 
             {/* Text */}
             <div>
-              <SectionLabel>Ons team</SectionLabel>
+              <SectionLabel>{teamLabel}</SectionLabel>
               <h2
                 className="text-charcoal mb-8"
                 style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 60px)', lineHeight: 1.05 }}
               >
-                Mensen die<br />u <em>echt</em> kennen
+                {teamHeading ? (
+                  <MultiLine text={teamHeading} />
+                ) : (
+                  <>Mensen die<br />u <em>echt</em> kennen</>
+                )}
               </h2>
               <p className="font-sans text-charcoal/55 text-lg leading-relaxed mb-10">
-                Bij SK Accounting werkt u altijd met een vaste contactpersoon
-                die uw dossier door en door kent. Geen callcenter, geen
-                doorverwijzingen — gewoon een vertrouwd aanspreekpunt.
+                {teamText ||
+                  'Bij SK Accounting werkt u altijd met een vaste contactpersoon die uw dossier door en door kent. Geen callcenter, geen doorverwijzingen — gewoon een vertrouwd aanspreekpunt.'}
               </p>
 
               <ul className="space-y-4 mb-12">
-                {[
-                  'Vaste persoonlijke boekhouder',
-                  'Vlot bereikbaar via telefoon en e-mail',
-                  'Proactieve opvolging van uw dossier',
-                ].map((item) => (
+                {teamBullets.map((item) => (
                   <li key={item} className="flex items-center gap-4 font-sans text-sm text-charcoal/70">
                     <span className="w-1.5 h-1.5 rounded-full bg-gold flex-shrink-0" />
                     {item}
@@ -319,7 +368,7 @@ export default async function HomePage() {
                 href="/team"
                 className="font-sans text-[11px] uppercase tracking-[0.22em] text-primary flex items-center gap-3 hover:gap-5 transition-all duration-300"
               >
-                Ontmoet ons team <span className="text-base">→</span>
+                {teamLinkLabel} <span className="text-base">→</span>
               </Link>
             </div>
 
@@ -381,18 +430,22 @@ export default async function HomePage() {
         />
 
         <div className="relative max-w-7xl mx-auto px-8">
-          <SectionLabel>Neem contact op</SectionLabel>
+          <SectionLabel>{ctaLabel}</SectionLabel>
 
           <h2
             className="text-white mb-8 max-w-3xl"
             style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(48px, 7vw, 80px)', lineHeight: 1 }}
           >
-            Klaar om samen<br /><em>te werken?</em>
+            {ctaHeading ? (
+              <MultiLine text={ctaHeading} />
+            ) : (
+              <>Klaar om samen<br /><em>te werken?</em></>
+            )}
           </h2>
 
           <p className="font-sans text-white/50 text-lg mb-12 max-w-md leading-relaxed">
-            Neem vandaag nog contact op voor een vrijblijvend
-            kennismakingsgesprek. We bekijken samen wat we voor u kunnen betekenen.
+            {ctaText ||
+              'Neem vandaag nog contact op voor een vrijblijvend kennismakingsgesprek. We bekijken samen wat we voor u kunnen betekenen.'}
           </p>
 
           <div className="flex flex-wrap gap-4">
@@ -400,13 +453,13 @@ export default async function HomePage() {
               href="/contact"
               className="font-sans text-[12px] font-medium uppercase tracking-[0.18em] bg-white text-primary px-8 py-4 hover:bg-surface transition-colors duration-300"
             >
-              Neem contact op
+              {ctaPrimaryLabel}
             </Link>
             <Link
               href="/diensten"
               className="font-sans text-[12px] font-medium uppercase tracking-[0.18em] border border-white/20 text-white px-8 py-4 hover:border-white/50 hover:bg-white/5 transition-all duration-300"
             >
-              Onze diensten
+              {ctaSecondaryLabel}
             </Link>
           </div>
         </div>
