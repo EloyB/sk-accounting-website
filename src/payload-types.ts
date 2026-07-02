@@ -112,12 +112,14 @@ export interface Config {
     'homepage-content': HomepageContent;
     'over-ons-content': OverOnsContent;
     'diensten-content': DienstenContent;
+    'privacy-content': PrivacyContent;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'homepage-content': HomepageContentSelect<false> | HomepageContentSelect<true>;
     'over-ons-content': OverOnsContentSelect<false> | OverOnsContentSelect<true>;
     'diensten-content': DienstenContentSelect<false> | DienstenContentSelect<true>;
+    'privacy-content': PrivacyContentSelect<false> | PrivacyContentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1098,6 +1100,10 @@ export interface SiteSetting {
   email?: string | null;
   address?: string | null;
   officeHours?: string | null;
+  /**
+   * Bijv. "BE 0790.380.051". Verschijnt in de footer en het privacybeleid.
+   */
+  companyNumber?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1250,6 +1256,37 @@ export interface DienstenContent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-content".
+ */
+export interface PrivacyContent {
+  id: number;
+  /**
+   * Wordt onder de titel getoond. Leeg = niet tonen.
+   */
+  lastUpdated?: string | null;
+  /**
+   * Laat leeg om de standaard privacytekst te tonen (met bedrijfsgegevens uit Site Settings). Vul je hier iets in, dan vervangt dat de volledige standaardtekst.
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1257,6 +1294,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   email?: T;
   address?: T;
   officeHours?: T;
+  companyNumber?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1357,6 +1395,17 @@ export interface DienstenContentSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-content_select".
+ */
+export interface PrivacyContentSelect<T extends boolean = true> {
+  lastUpdated?: T;
+  body?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

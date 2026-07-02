@@ -4,6 +4,7 @@ import * as migration_20260702_090342_homepage_aanpak from './20260702_090342_ho
 import * as migration_20260702_092826_diensten_content from './20260702_092826_diensten_content';
 import * as migration_20260702_093623_remove_over_ons_geschiedenis from './20260702_093623_remove_over_ons_geschiedenis';
 import * as migration_20260702_094229_homepage_all_sections from './20260702_094229_homepage_all_sections';
+import * as migration_20260702_102848_privacy_and_company_number from './20260702_102848_privacy_and_company_number';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260702_094229_homepage_all_sections.up,
     down: migration_20260702_094229_homepage_all_sections.down,
-    name: '20260702_094229_homepage_all_sections'
+    name: '20260702_094229_homepage_all_sections',
+  },
+  {
+    up: migration_20260702_102848_privacy_and_company_number.up,
+    down: migration_20260702_102848_privacy_and_company_number.down,
+    name: '20260702_102848_privacy_and_company_number'
   },
 ];

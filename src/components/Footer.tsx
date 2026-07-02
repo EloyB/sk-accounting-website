@@ -8,6 +8,7 @@ export default async function Footer() {
   let phone: string | null = null
   let email: string | null = null
   let address: string | null = null
+  let companyNumber: string | null = null
 
   try {
     const payload = await getPayload({ config })
@@ -15,6 +16,7 @@ export default async function Footer() {
     phone = settings.phone || null
     email = settings.email || null
     address = settings.address || null
+    companyNumber = settings.companyNumber || null
   } catch {
     // Geen DB-verbinding (bv. tijdens build) — toon de placeholders hieronder.
   }
@@ -129,15 +131,26 @@ export default async function Footer() {
                   {email || 'info@sk-accounting.be'}
                 </a>
               </li>
+              <li className="font-sans text-sm text-white/40 pt-1">
+                BTW {companyNumber || 'BE 0790.380.051'}
+              </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom — copyright */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 py-8">
-          <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-white/30">
-            © {new Date().getFullYear()} SK Accounting — Alle rechten voorbehouden
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-5">
+            <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-white/30">
+              © {new Date().getFullYear()} SK Accounting — Alle rechten voorbehouden
+            </p>
+            <Link
+              href="/privacy"
+              className="font-sans text-[11px] uppercase tracking-[0.15em] text-white/30 hover:text-white/70 transition-colors"
+            >
+              Privacybeleid
+            </Link>
+          </div>
           <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-white/30">
             Gebouwd door{' '}
             <a href="https://studio-swyft.be" className="hover:text-white/70 transition-colors">

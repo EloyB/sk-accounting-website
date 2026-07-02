@@ -27,5 +27,11 @@ export const SiteSettings: GlobalConfig = {
       name: 'officeHours',
       type: 'textarea',
     },
+    {
+      name: 'companyNumber',
+      type: 'text',
+      label: 'Ondernemingsnummer (KBO/BTW)',
+      admin: { description: 'Bijv. "BE 0790.380.051". Verschijnt in de footer en het privacybeleid.' },
+    },
   ],
 }

@@ -19,6 +19,7 @@ import { SiteSettings } from './globals/SiteSettings'
 import { HomepageContent } from './globals/HomepageContent'
 import { OverOnsContent } from './globals/OverOnsContent'
 import { DienstenContent } from './globals/DienstenContent'
+import { PrivacyContent } from './globals/PrivacyContent'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -41,7 +42,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, TeamMembers, Services, ContactSubmissions],
-  globals: [SiteSettings, HomepageContent, OverOnsContent, DienstenContent],
+  globals: [SiteSettings, HomepageContent, OverOnsContent, DienstenContent, PrivacyContent],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
