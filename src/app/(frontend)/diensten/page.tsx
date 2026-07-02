@@ -60,7 +60,7 @@ const defaultServices = [
   },
 ]
 
-const pillars = [
+const defaultPillars = [
   {
     num: '01',
     title: 'Volledig ontzorgd',
@@ -80,7 +80,10 @@ const pillars = [
 
 export default async function DienstenPage() {
   const payload = await getPayload({ config })
-  const servicesResult = await payload.find({ collection: 'services', sort: 'order', limit: 50 })
+  const [servicesResult, dienstenContent] = await Promise.all([
+    payload.find({ collection: 'services', sort: 'order', limit: 50 }),
+    payload.findGlobal({ slug: 'diensten-content' }),
+  ])
 
   const services = servicesResult.docs.length > 0
     ? servicesResult.docs.map((s, i) => ({
@@ -89,6 +92,16 @@ export default async function DienstenPage() {
         description: s.description,
       }))
     : defaultServices
+
+  const werkwijzeLabel = dienstenContent.werkwijzeLabel || 'Werkwijze'
+  const werkwijzeHeading = dienstenContent.werkwijzeHeading || 'Hoe wij werken'
+  const pillars = dienstenContent.pijlers?.length
+    ? dienstenContent.pijlers.map((p, i) => ({
+        num: String(i + 1).padStart(2, '0'),
+        title: p.title,
+        desc: p.description,
+      }))
+    : defaultPillars
 
   return (
     <>
@@ -191,12 +204,12 @@ export default async function DienstenPage() {
       <section className="bg-white py-28">
         <div className="max-w-7xl mx-auto px-8">
           <div className="mb-16">
-            <SectionLabel>Werkwijze</SectionLabel>
+            <SectionLabel>{werkwijzeLabel}</SectionLabel>
             <h2
               className="text-charcoal"
               style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(36px, 4.5vw, 56px)', lineHeight: 1 }}
             >
-              Hoe wij werken
+              {werkwijzeHeading}
             </h2>
           </div>
 

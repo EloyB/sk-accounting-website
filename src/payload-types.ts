@@ -111,11 +111,13 @@ export interface Config {
     'site-settings': SiteSetting;
     'homepage-content': HomepageContent;
     'over-ons-content': OverOnsContent;
+    'diensten-content': DienstenContent;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'homepage-content': HomepageContentSelect<false> | HomepageContentSelect<true>;
     'over-ons-content': OverOnsContentSelect<false> | OverOnsContentSelect<true>;
+    'diensten-content': DienstenContentSelect<false> | DienstenContentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1203,6 +1205,27 @@ export interface OverOnsContent {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "diensten-content".
+ */
+export interface DienstenContent {
+  id: number;
+  werkwijzeLabel?: string | null;
+  werkwijzeHeading?: string | null;
+  /**
+   * Laat leeg om de standaardpijlers te tonen. Nummering gebeurt automatisch.
+   */
+  pijlers?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1277,6 +1300,24 @@ export interface OverOnsContentSelect<T extends boolean = true> {
   ctaText?: T;
   ctaPrimaryLabel?: T;
   ctaSecondaryLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "diensten-content_select".
+ */
+export interface DienstenContentSelect<T extends boolean = true> {
+  werkwijzeLabel?: T;
+  werkwijzeHeading?: T;
+  pijlers?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

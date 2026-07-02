@@ -18,6 +18,7 @@ import { ContactSubmissions } from './collections/ContactSubmissions'
 import { SiteSettings } from './globals/SiteSettings'
 import { HomepageContent } from './globals/HomepageContent'
 import { OverOnsContent } from './globals/OverOnsContent'
+import { DienstenContent } from './globals/DienstenContent'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,7 +41,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, TeamMembers, Services, ContactSubmissions],
-  globals: [SiteSettings, HomepageContent, OverOnsContent],
+  globals: [SiteSettings, HomepageContent, OverOnsContent, DienstenContent],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
