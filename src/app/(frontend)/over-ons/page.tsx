@@ -7,7 +7,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 export const metadata: Metadata = {
   title: 'Over ons',
   description:
-    'Maak kennis met SK Accounting: een persoonlijk boekhoudkantoor gebouwd op vertrouwen, integriteit en betrokkenheid. Ontdek ons verhaal, onze waarden en onze geschiedenis.',
+    'Maak kennis met SK Accounting: een persoonlijk boekhoudkantoor gebouwd op vertrouwen, integriteit en betrokkenheid. Ontdek ons verhaal en onze waarden.',
   alternates: { canonical: '/over-ons' },
 }
 
@@ -41,14 +41,6 @@ const defaultValues = [
   },
 ]
 
-const defaultMilestones = [
-  { year: '2008', event: 'Oprichting van het kantoor door Stef Kempenaers in Antwerpen.' },
-  { year: '2012', event: 'Uitbreiding van het team met een tweede vennoot en focus op kmo\'s.' },
-  { year: '2016', event: 'Introductie van volledig digitale dossierverwerking voor alle klanten.' },
-  { year: '2021', event: 'Verhuis naar een nieuw, modern kantoor in het centrum van de stad.' },
-  { year: '2024', event: 'Meer dan 200 actieve klanten en een team van vijf ervaren medewerkers.' },
-]
-
 const defaultStats = [
   { value: '15+', label: 'Jaar ervaring' },
   { value: '200+', label: 'Tevreden klanten' },
@@ -61,7 +53,6 @@ export default async function OverOnsPage() {
   const content = await payload.findGlobal({ slug: 'over-ons-content' })
 
   const values = content.waarden?.length ? content.waarden : defaultValues
-  const milestones = content.milestones?.length ? content.milestones : defaultMilestones
   const stats = content.stats?.length ? content.stats : defaultStats
 
   return (
@@ -197,36 +188,6 @@ export default async function OverOnsPage() {
                 <p className="font-sans text-sm text-charcoal/55 leading-relaxed">{v.description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Tijdlijn ─────────────────────────────────────────────── */}
-      <section className="bg-white py-28">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-28">
-            <div>
-              <SectionLabel>{content.geschiedenisLabel || 'Onze geschiedenis'}</SectionLabel>
-              <h2
-                className="text-charcoal"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(36px, 4.5vw, 56px)', lineHeight: 1.05 }}
-              >
-                {content.geschiedenisHeading || 'Hoe we zijn gekomen waar we zijn'}
-              </h2>
-            </div>
-            <div>
-              {milestones.map((m, i) => (
-                <div key={i} className={`flex gap-8 ${i < milestones.length - 1 ? 'pb-8 border-b border-charcoal/8 mb-8' : ''}`}>
-                  <div
-                    className="text-gold flex-shrink-0 w-12"
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: '1.1rem' }}
-                  >
-                    {m.year}
-                  </div>
-                  <p className="font-sans text-sm text-charcoal/60 leading-relaxed pt-0.5">{m.event}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>

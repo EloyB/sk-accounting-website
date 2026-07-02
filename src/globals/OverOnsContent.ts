@@ -68,24 +68,6 @@ export const OverOnsContent: GlobalConfig = {
     },
     {
       type: 'collapsible',
-      label: 'Onze geschiedenis',
-      fields: [
-        { name: 'geschiedenisLabel', type: 'text', label: 'Labeltje', defaultValue: 'Onze geschiedenis' },
-        { name: 'geschiedenisHeading', type: 'text', label: 'Titel', defaultValue: 'Hoe we zijn gekomen waar we zijn' },
-        {
-          name: 'milestones',
-          type: 'array',
-          label: 'Mijlpalen',
-          admin: { description: 'Laat leeg om de standaard tijdlijn te tonen.' },
-          fields: [
-            { name: 'year', type: 'text', label: 'Jaar', required: true },
-            { name: 'event', type: 'textarea', label: 'Gebeurtenis', required: true },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'collapsible',
       label: 'Oproep (CTA)',
       fields: [
         { name: 'ctaLabel', type: 'text', label: 'Labeltje', defaultValue: 'Maak kennis' },
