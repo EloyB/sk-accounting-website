@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 const navLinks = [
@@ -35,21 +36,16 @@ export default function Nav() {
         <div className="flex items-center justify-between h-[72px]">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-9 h-9 bg-primary flex items-center justify-center flex-shrink-0 overflow-hidden">
-              <span
-                className="text-white text-[13px] tracking-widest uppercase"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
-              >
-                SK
-              </span>
-            </div>
-            <span
-              className="text-charcoal text-[21px] tracking-wide"
-              style={{ fontFamily: 'var(--font-display)', fontWeight: 400 }}
-            >
-              SK Accounting
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-dark.svg"
+              alt="SK Accounting"
+              width={298}
+              height={172}
+              priority
+              unoptimized
+              className="h-9 w-auto"
+            />
           </Link>
 
           {/* Desktop nav */}

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -27,21 +28,15 @@ export default async function Footer() {
         {/* Top — brand + CTA */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 pt-20 pb-14 border-b border-white/10">
           <div>
-            <Link href="/" className="inline-flex items-center gap-3 mb-5">
-              <div className="w-9 h-9 bg-white/10 flex items-center justify-center flex-shrink-0">
-                <span
-                  className="text-white text-[13px] tracking-widest uppercase"
-                  style={{ fontFamily: 'var(--font-display)', fontWeight: 500 }}
-                >
-                  SK
-                </span>
-              </div>
-              <span
-                className="text-white text-[22px] tracking-wide"
-                style={{ fontFamily: 'var(--font-display)', fontWeight: 300 }}
-              >
-                SK Accounting
-              </span>
+            <Link href="/" className="inline-flex items-center mb-5">
+              <Image
+                src="/logo.svg"
+                alt="SK Accounting"
+                width={298}
+                height={172}
+                unoptimized
+                className="h-10 w-auto"
+              />
             </Link>
             <p className="font-sans text-sm leading-relaxed max-w-xs text-white/50">
               Uw betrouwbare partner voor boekhouding en fiscaal advies. Persoonlijk, proactief en
