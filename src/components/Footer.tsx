@@ -10,6 +10,7 @@ export default async function Footer() {
   let email: string | null = null
   let address: string | null = null
   let companyNumber: string | null = null
+  let itaaNumber: string | null = null
 
   try {
     const payload = await getPayload({ config })
@@ -18,6 +19,7 @@ export default async function Footer() {
     email = settings.email || null
     address = settings.address || null
     companyNumber = settings.companyNumber || null
+    itaaNumber = settings.itaaNumber || null
   } catch {
     // Geen DB-verbinding (bv. tijdens build) — toon de placeholders hieronder.
   }
@@ -129,6 +131,11 @@ export default async function Footer() {
               <li className="font-sans text-sm text-white/40 pt-1">
                 BTW {companyNumber || 'BE 0790.380.051'}
               </li>
+              {itaaNumber && (
+                <li className="font-sans text-sm text-white/40">
+                  ITAA {itaaNumber}
+                </li>
+              )}
             </ul>
           </div>
         </div>

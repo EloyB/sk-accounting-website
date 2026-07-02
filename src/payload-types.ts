@@ -1104,6 +1104,10 @@ export interface SiteSetting {
    * Bijv. "BE 0790.380.051". Verschijnt in de footer en het privacybeleid.
    */
   companyNumber?: string | null;
+  /**
+   * Erkenningsnummer bij het ITAA. Verschijnt in de footer. Laat leeg om niet te tonen.
+   */
+  itaaNumber?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1295,6 +1299,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   address?: T;
   officeHours?: T;
   companyNumber?: T;
+  itaaNumber?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

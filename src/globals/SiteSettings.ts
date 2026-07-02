@@ -33,5 +33,11 @@ export const SiteSettings: GlobalConfig = {
       label: 'Ondernemingsnummer (KBO/BTW)',
       admin: { description: 'Bijv. "BE 0790.380.051". Verschijnt in de footer en het privacybeleid.' },
     },
+    {
+      name: 'itaaNumber',
+      type: 'text',
+      label: 'ITAA-nummer (erkenning)',
+      admin: { description: 'Erkenningsnummer bij het ITAA. Verschijnt in de footer. Laat leeg om niet te tonen.' },
+    },
   ],
 }
