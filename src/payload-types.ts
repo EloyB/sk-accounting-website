@@ -1116,6 +1116,18 @@ export interface HomepageContent {
    * Bijv. "200+"
    */
   statClients?: string | null;
+  aanpakLabel?: string | null;
+  aanpakHeading?: string | null;
+  /**
+   * Laat leeg om de standaardpunten te tonen. Nummering gebeurt automatisch.
+   */
+  aanpak?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1212,6 +1224,15 @@ export interface HomepageContentSelect<T extends boolean = true> {
   heroCtaLabel?: T;
   statYears?: T;
   statClients?: T;
+  aanpakLabel?: T;
+  aanpakHeading?: T;
+  aanpak?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

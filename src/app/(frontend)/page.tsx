@@ -37,7 +37,7 @@ const defaultServices = [
   { id: '06', title: 'Financieel advies', description: 'Strategisch advies over investeringen, financiering en de financiële gezondheid van uw onderneming op lange termijn.' },
 ]
 
-const valueProps = [
+const defaultValueProps = [
   { num: '01', title: 'Persoonlijke aanpak', desc: 'Geen anoniem kantoor. U heeft één vaste boekhouder die uw dossier door en door kent en altijd bereikbaar is.' },
   { num: '02', title: 'Proactief advies', desc: 'We wachten niet tot er problemen zijn. We denken actief mee over opportuniteiten voor uw onderneming.' },
   { num: '03', title: 'Digitaal & efficiënt', desc: 'Via ons digitaal platform bezorgt u documenten eenvoudig en veilig. Minder papier, meer overzicht.' },
@@ -60,6 +60,16 @@ export default async function HomePage() {
   const heroCtaLabel = homepageContent.heroCtaLabel || 'Maak een afspraak'
   const statYears = homepageContent.statYears || '15+'
   const statClients = homepageContent.statClients || '200+'
+
+  const aanpakLabel = homepageContent.aanpakLabel || 'Onze aanpak'
+  const aanpakHeading = homepageContent.aanpakHeading || 'Waarom SK Accounting?'
+  const valueProps = homepageContent.aanpak?.length
+    ? homepageContent.aanpak.map((p, i) => ({
+        num: String(i + 1).padStart(2, '0'),
+        title: p.title,
+        desc: p.description,
+      }))
+    : defaultValueProps
 
   const services = servicesResult.docs.length > 0
     ? servicesResult.docs.map((s, i) => ({
@@ -180,12 +190,12 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-8">
 
           <div className="mb-16">
-            <SectionLabel>Onze aanpak</SectionLabel>
+            <SectionLabel>{aanpakLabel}</SectionLabel>
             <h2
               className="text-charcoal"
               style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontSize: 'clamp(40px, 5vw, 60px)', lineHeight: 1 }}
             >
-              Waarom SK Accounting?
+              {aanpakHeading}
             </h2>
           </div>
 
