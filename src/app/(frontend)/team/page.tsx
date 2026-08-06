@@ -232,9 +232,9 @@ export default async function TeamPage() {
                 lineHeight: 1.2,
               }}
             >
-              Een goede boekhouder kent uw cijfers.
+              Een goede accountant kent uw cijfers.
               <br />
-              Een <em>uitstekende</em> boekhouder kent uw verhaal.
+              Een <em>uitstekende</em> accountant kent uw verhaal.
             </blockquote>
             <div className="w-px h-16 bg-gold/40 mx-auto mt-12 mb-6" />
             <p className="font-sans text-charcoal/40 text-[11px] uppercase tracking-[0.28em]">
