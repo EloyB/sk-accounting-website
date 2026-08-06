@@ -83,13 +83,7 @@ export default async function Footer() {
               Diensten
             </h3>
             <ul className="space-y-3">
-              {[
-                'Boekhouding',
-                'Btw-aangiftes',
-                'Loonadministratie',
-                'Fiscaal advies',
-                'Bedrijfsoprichting',
-              ].map((s) => (
+              {['Boekhouding', 'Btw-aangiftes', 'Fiscaal advies'].map((s) => (
                 <li key={s}>
                   <Link
                     href="/diensten"
@@ -131,11 +125,7 @@ export default async function Footer() {
               <li className="font-sans text-sm text-white/40 pt-1">
                 BTW {companyNumber || 'BE 0790.380.051'}
               </li>
-              {itaaNumber && (
-                <li className="font-sans text-sm text-white/40">
-                  ITAA {itaaNumber}
-                </li>
-              )}
+              {itaaNumber && <li className="font-sans text-sm text-white/40">ITAA {itaaNumber}</li>}
             </ul>
           </div>
         </div>
